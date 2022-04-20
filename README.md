@@ -6,3 +6,6 @@ YGO MD 中文字典查找插件。
 1. [下載](https://github.com/JacKooDesu/YGO-Translate/releases/tag/YGO-Translate-v1.0)插件
 2. 解壓縮後將Build資料夾內所有檔案拉到MD根目錄 `( ~\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel )`
 3. 執行遊戲
+
+## 注意事項
+- 遊戲語言需先調整成 ***英文*** 才能正常翻譯
