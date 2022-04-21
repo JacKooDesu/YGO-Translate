@@ -45,6 +45,20 @@ namespace YGOTranslate
         }
 
         [HarmonyPrefix]
+        public static bool GetRubyName_Pre(ref string __result, int cardId, bool replaceAlnum = true)
+        {
+            if (Data.FindById(cardId) == null)
+            {
+                return true;
+            }
+            else
+            {
+                __result = Data.FindById(cardId).cn;
+                return false;
+            }
+        }
+
+        [HarmonyPrefix]
         public static bool GetDesc_Pre(ref string __result, int cardId, bool replaceAlnum = true)
         {
             if (Data.FindById(cardId) == null)

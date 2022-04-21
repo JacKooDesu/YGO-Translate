@@ -78,14 +78,6 @@ namespace YGOTranslate
             if (cards.FindIndex((c) => c.id == id) !=-1)
             {
                 int index = cards.FindIndex((c) => c.id == id);
-                //寫檔功能尚未實作
-                //using(var writer = new StreamWriter(dir))
-                //{
-                //    using(var reader = new StreamReader(dir))
-                //    {
-
-                //    }
-                //}
                 cards[index].id = id;
                 return cards.Find((c) => c.id == id);
             }
@@ -104,6 +96,22 @@ namespace YGOTranslate
                 return cards.Find((c) => c.eng == nm);
             }
             return null;
+        }
+    
+        public async static void SaveModifiedCards()
+        {
+            string data = "";
+            FileStream fs = new FileStream(Path.GetDirectoryName(file) + "/modified.csv", FileMode.Create, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+            foreach (var card in cards)
+            {
+                data = card.id.ToString() + ",," + card.cn + "," + card.cnDesc;
+                BepInExLoader.log.LogMessage(data);
+                sw.WriteLine(data);
+                await Task.Yield();
+            }
+            sw.Close();
+            fs.Close();
         }
     }
 }
