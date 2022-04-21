@@ -18,7 +18,7 @@ namespace YGOTranslate
         public const string
             ModName = "YGOTranslate",
             Guid = "com.jackoo.YGOTranslate",
-            Version = "1.0";
+            Version = "1.1";
 
         public static BepInEx.Logging.ManualLogSource log;
 

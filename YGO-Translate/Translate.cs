@@ -17,26 +17,31 @@ namespace YGOTranslate
         }
 
         [HarmonyPrefix]
-        public static bool GetName_Pre(ref string __result,int cardId,bool replaceAlnum=true)
+        public static bool GetName_Pre(ref string __result, out bool __state, int cardId,bool replaceAlnum=true)
         {
             if (Data.FindById(cardId) == null)
             {
+                __state = true;
                 return true;
             }
             else
             {
+                __state = false;
                 __result = Data.FindById(cardId).cn;
                 return false;
             }            
         }
 
         [HarmonyPostfix]
-        public static void GetName_Post(ref string __result, int cardId, bool replaceAlnum = true)
+        public static void GetName_Post(ref string __result, bool __state, int cardId, bool replaceAlnum = true)
         {
+            if (!__state)
+                return;
             var setting = Data.FindByName(__result,cardId);
             if (setting != null)
                 __result = setting.cn;
-            
+            else
+                BepInExLoader.log.LogMessage("Card " + __result + " not found! / id = " + cardId.ToString());
         }
 
         [HarmonyPrefix]
