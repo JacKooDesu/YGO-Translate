@@ -11,6 +11,8 @@ namespace YGOTranslate
 {
     public class Translate
     {
+        public static bool isActive = true;
+
         public Translate(IntPtr ptr)
         {
 
@@ -19,6 +21,13 @@ namespace YGOTranslate
         [HarmonyPrefix]
         public static bool GetName_Pre(ref string __result, out bool __state, int cardId,bool replaceAlnum=true)
         {
+            if (!isActive)
+            {
+                __state = false;
+                return true;
+            }
+                
+
             if (Data.FindById(cardId) == null)
             {
                 __state = true;
@@ -47,6 +56,11 @@ namespace YGOTranslate
         [HarmonyPrefix]
         public static bool GetRubyName_Pre(ref string __result, int cardId, bool replaceAlnum = true)
         {
+            if (!isActive)
+            {
+                return true;
+            }
+
             if (Data.FindById(cardId) == null)
             {
                 return true;
@@ -61,6 +75,11 @@ namespace YGOTranslate
         [HarmonyPrefix]
         public static bool GetDesc_Pre(ref string __result, int cardId, bool replaceAlnum = true)
         {
+            if (!isActive)
+            {
+                return true;
+            }
+
             if (Data.FindById(cardId) == null)
             {
                 return true;

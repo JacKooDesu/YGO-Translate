@@ -23,10 +23,10 @@ namespace YGOTranslate
         [HarmonyPostfix]
         public static void Update()
         {
-            if (Input.GetKeyInt(BepInEx.IL2CPP.UnityEngine.KeyCode.F9) && Event.current.type == EventType.KeyDown)
+            if (Input.GetKeyInt(BepInEx.IL2CPP.UnityEngine.KeyCode.F9) && Event.current.type == EventType.KeyDown && Event.current.control)
             {
-                BepInExLoader.log.LogMessage("F9 Pressed");
-                Data.SaveModifiedCards();
+                BepInExLoader.log.LogMessage("Ctrl + F9 Pressed");
+                // Data.SaveModifiedCards();
                 Event.current.Use();
             }
         }

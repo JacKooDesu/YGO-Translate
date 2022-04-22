@@ -122,6 +122,7 @@
     <Compile Include="BepInExLoader.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DebugHelper.cs" />
+    <Compile Include="SwitchComponent.cs" />
     <Compile Include="Translate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

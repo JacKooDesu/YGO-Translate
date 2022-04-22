@@ -18,11 +18,12 @@ namespace YGOTranslate
         public const string
             ModName = "YGOTranslate",
             Guid = "com.jackoo.YGOTranslate",
-            Version = "1.2";
+            Version = "1.3";
 
         public static BepInEx.Logging.ManualLogSource log;
 
         ConfigEntry<string> databasePath;
+        ConfigEntry<string> enableKey;
 
         public override void Load()
         {
@@ -30,6 +31,8 @@ namespace YGOTranslate
 
             databasePath = Config.Bind("General", "dataPath", "YGOTranslate\\data.csv");
             Data.Setup(databasePath.Value);
+
+            enableKey = Config.Bind("Key", "switchKey", "F9", "This value is using Unity KeyCode! https://docs.unity3d.com/ScriptReference/KeyCode.html");
 
             try
             {
@@ -54,11 +57,45 @@ namespace YGOTranslate
                 log.LogError("Broken");
             }
 
+            BindEnableKey();
+
             // FOR DEBUG ONLY !!
-            // BindDebugKey();
+            // BindDebugHelper();
         }
 
-        public void BindDebugKey()
+        public void BindEnableKey()
+        {
+            try
+            {
+                ClassInjector.RegisterTypeInIl2Cpp<SwitchComponent>();
+
+                var go = new UnityEngine.GameObject("SwitchComponent");
+                go.AddComponent<SwitchComponent>();
+                Object.DontDestroyOnLoad(go);
+            }
+            catch
+            {
+                log.LogError("Failed to register IL2CPP - DebugHelper");
+            }
+
+            try
+            {
+                SwitchComponent.key = (BepInEx.IL2CPP.UnityEngine.KeyCode)Enum.Parse(typeof(BepInEx.IL2CPP.UnityEngine.KeyCode), enableKey.Value);
+
+                var harmony = new Harmony("jackoo.helloworld.il2cpp");
+
+                // 目前Debug隨便綁定一個monobehaviour物件
+                var bindUpdate = AccessTools.Method(typeof(CardPictureCreator), "Update");
+                var postUpdate = AccessTools.Method(typeof(SwitchComponent), "Update");
+                harmony.Patch(bindUpdate, postfix: new HarmonyMethod(postUpdate));
+            }
+            catch
+            {
+                log.LogError("ENABLE KEY BIND FAILED!");
+            }
+        }
+
+        public void BindDebugHelper()
         {
             try
             {
