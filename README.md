@@ -7,6 +7,12 @@ YGO MD 中文字典查找插件。
 2. 解壓縮後將Build資料夾內所有檔案拉到MD根目錄 `( ~\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel )`
 3. 執行遊戲
 
+## 設定
+
+- 路徑 - `~\Yu-Gi-Oh! Master Duel\BepInEx\config\com.jackoo.YGOTranslate.cfg` 
+- dataPath - 翻譯檔路徑
+- switchKey - 開關按鍵，使用 `Ctrl`+`[value]`，預設 `F9`
+
 ## 注意事項
 - ~~遊戲語言需先調整成 ***英文*** 才能正常翻譯~~ v1.2 後不再依賴卡名查詢
 - 如果使用Excel或其他可開啟試算表的軟體開啟 `YGOTranslate\data.csv` ， ***不要*** 存檔，可能會導致字典檔無法被讀取
