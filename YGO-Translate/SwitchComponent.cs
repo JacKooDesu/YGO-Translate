@@ -14,7 +14,7 @@ namespace YGOTranslate
 {
     public class SwitchComponent : MonoBehaviour
     {
-        public static BepInEx.IL2CPP.UnityEngine.KeyCode key;
+        public static BepInEx.IL2CPP.UnityEngine.KeyCode activeKey;
 
         public SwitchComponent(IntPtr ptr) : base(ptr)
         {
@@ -24,7 +24,7 @@ namespace YGOTranslate
         [HarmonyPostfix]
         public static void Update()
         {
-            if (Input.GetKeyInt(key) && Event.current.type == EventType.KeyDown && Event.current.control)
+            if (Input.GetKeyInt(activeKey) && Event.current.type == EventType.KeyDown && Event.current.control)
             {
                 Translate.isActive = !Translate.isActive;
                 BepInExLoader.log.LogMessage("YGO-Translate is " + (Translate.isActive ? "on" : "off"));

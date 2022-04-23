@@ -9,13 +9,15 @@ namespace YGOTranslate
 {
     public class CardSetting
     {
-        public CardSetting(int id,string eng,string cn,string cnDesc)
+        public CardSetting(int gameId,int id,string eng,string cn,string cnDesc)
         {
+            this.gameId = gameId;
             this.id = id;
             this.eng = eng; 
             this.cn = cn;
             this.cnDesc = cnDesc;
         }
+        public int gameId;
         public int id;
         public string eng;
         public string cn;
@@ -29,7 +31,7 @@ namespace YGOTranslate
 
         static string file;
         public async static void Setup(string dir)
-        {
+        {          
             if (!File.Exists(dir))
             {
                 BepInExLoader.log.LogMessage("Dir"+ Path.GetFullPath(dir)+ " not found");
@@ -47,19 +49,19 @@ namespace YGOTranslate
                     if (i != 0)
                     {
                         var keys =str.Split(',');
-                        if (keys.Length == 4)
+                        if (keys.Length == 5)
                         {
-                            cards.Add(new CardSetting(Int32.Parse(keys[0]),  keys[1], keys[2], keys[3]));
+                            cards.Add(new CardSetting(Int32.Parse(keys[0]), Int32.Parse(keys[1]),  keys[2].ToLower(), keys[3], keys[4]));
                         } 
                         else
                         {
-                            var engLength = keys.Length - 3;
-                            var c = new CardSetting(Int32.Parse(keys[0]), "", keys[2+engLength-1], keys[3 + engLength - 1]);
+                            var engLength = keys.Length - 4;
+                            var c = new CardSetting(Int32.Parse(keys[0]), Int32.Parse(keys[1]), "", keys[3+engLength-1], keys[4 + engLength - 1]);
                             var finalEng = "";
                             for (int j = 0; j < engLength; j++)
-                                finalEng += keys[j + 1];
+                                finalEng += keys[j + 2];
                             
-                            c.eng = finalEng;
+                            c.eng = finalEng.ToLower();
 
                             cards.Add(c);
                         }
@@ -73,39 +75,39 @@ namespace YGOTranslate
             }
         }
 
-        public static CardSetting FindById(int id)
+        public static CardSetting FindById(int gameId)
         {
-            if (cards.FindIndex((c) => c.id == id) !=-1)
+            if (cards.FindIndex((c) => c.gameId == gameId) !=-1)
             {
-                int index = cards.FindIndex((c) => c.id == id);
-                cards[index].id = id;
-                return cards.Find((c) => c.id == id);
+                int index = cards.FindIndex((c) => c.gameId == gameId);
+                return cards.Find((c) => c.gameId == gameId);
             }
 
             return null;
         }
 
-        public static CardSetting FindByName(string nm,int id=-1)
+        public static CardSetting FindByName(string nm,int gameId=-1)
         {
             nm = nm.Replace(",", string.Empty);
+            nm = nm.ToLower();
             if (cards.FindIndex((c) => c.eng == nm) != -1)
             {
                 //BepInExLoader.log.LogMessage("Founded!");
                 var index = cards.FindIndex((c) => c.eng == nm);
-                cards[index].id = id;
+                cards[index].gameId = gameId;
                 return cards.Find((c) => c.eng == nm);
             }
             return null;
         }
     
-        public async static void SaveModifiedCards()
+        public async static void PatchGameId()
         {
             string data = "";
             FileStream fs = new FileStream(Path.GetDirectoryName(file) + "/modified.csv", FileMode.Create, FileAccess.Write);
             StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
             foreach (var card in cards)
             {
-                data = card.id.ToString() + ",," + card.cn + "," + card.cnDesc;
+                data = card.gameId.ToString() + "," + card.id.ToString() + "," + card.eng + "," + card.cn + "," + card.cnDesc;
                 BepInExLoader.log.LogMessage(data);
                 sw.WriteLine(data);
                 await Task.Yield();

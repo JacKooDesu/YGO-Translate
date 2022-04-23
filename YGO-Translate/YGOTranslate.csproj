@@ -81,6 +81,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>C:\Program Files\System.Data.SQLite\2015\bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>C:\Program Files\System.Data.SQLite\2015\bin\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,9 +100,16 @@
     <Reference Include="UnhollowerRuntimeLib">
       <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel\BepInEx\core\UnhollowerRuntimeLib.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel\BepInEx\unhollowed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\..\..\..\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel\BepInEx\unity-libs\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel\BepInEx\unity-libs\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel\BepInEx\unhollowed\UnityEngine.CoreModule.dll</HintPath>
@@ -117,11 +131,15 @@
       <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel\BepInEx\unhollowed\UnityEngine.UIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="XUnity.Common">
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel\BepInEx\core\XUnity.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BepInExLoader.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DebugHelper.cs" />
+    <Compile Include="FontHelper.cs" />
     <Compile Include="SwitchComponent.cs" />
     <Compile Include="Translate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

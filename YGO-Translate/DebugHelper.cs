@@ -10,7 +10,6 @@ using Object = UnityEngine.Object;
 using Input = BepInEx.IL2CPP.UnityEngine.Input;
 using HarmonyLib;
 
-
 namespace YGOTranslate
 {
     public class DebugHelper : MonoBehaviour
@@ -23,10 +22,10 @@ namespace YGOTranslate
         [HarmonyPostfix]
         public static void Update()
         {
-            if (Input.GetKeyInt(BepInEx.IL2CPP.UnityEngine.KeyCode.F9) && Event.current.type == EventType.KeyDown && Event.current.control)
+            if (Input.GetKeyInt(BepInEx.IL2CPP.UnityEngine.KeyCode.F12) && Event.current.type == EventType.KeyDown && Event.current.control)
             {
-                BepInExLoader.log.LogMessage("Ctrl + F9 Pressed");
-                // Data.SaveModifiedCards();
+                BepInExLoader.log.LogMessage("Debug Key Pressed!");
+                Data.PatchGameId();
                 Event.current.Use();
             }
         }

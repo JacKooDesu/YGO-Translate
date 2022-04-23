@@ -18,12 +18,14 @@ namespace YGOTranslate
         public const string
             ModName = "YGOTranslate",
             Guid = "com.jackoo.YGOTranslate",
-            Version = "1.3";
+            Version = "1.4";
 
         public static BepInEx.Logging.ManualLogSource log;
 
-        ConfigEntry<string> databasePath;
-        ConfigEntry<string> enableKey;
+        static ConfigEntry<string> databasePath;
+        static ConfigEntry<bool> TMP_fallback_setting;
+        static ConfigEntry<string> enableKey;
+        static ConfigEntry<string> tmpKey;
 
         public override void Load()
         {
@@ -32,32 +34,21 @@ namespace YGOTranslate
             databasePath = Config.Bind("General", "dataPath", "YGOTranslate\\data.csv");
             Data.Setup(databasePath.Value);
 
+            TMP_fallback_setting = Config.Bind("General", "TMP_fallback", true, "This is an copy version of XUnity fallback script, still in test!");
+
             enableKey = Config.Bind("Key", "switchKey", "F9", "This value is using Unity KeyCode! https://docs.unity3d.com/ScriptReference/KeyCode.html");
+            tmpKey = Config.Bind("Key", "tmpKey", "F12", "You need set TMP_fallback_settin to true first");
 
-            try
-            {
-                var harmony = new Harmony("jackoo.helloworld.il2cpp");
+            BindMethod<Content, Translate>("GetName", "GetName_Pre", "GetName_Post");
+            BindPreMethod<Content, Translate>("GetRubyName", "GetRubyName_Pre");
+            BindPreMethod<Content, Translate>("GetDesc", "GetDesc_Pre");
 
-                var originName = AccessTools.Method(typeof(Content), "GetName");
-                var preName = AccessTools.Method(typeof(Translate), "GetName_Pre");
-                var postName = AccessTools.Method(typeof(Translate), "GetName_Post");
-                
-                var originRubyName = AccessTools.Method(typeof(Content), "GetRubyName");
-                var preRubyName = AccessTools.Method(typeof(Translate), "GetRubyName_Pre");
-
-                var originDesc = AccessTools.Method(typeof(Content), "GetDesc");
-                var preDesc = AccessTools.Method(typeof(Translate), "GetDesc_Pre");
-
-                harmony.Patch(originName, prefix: new HarmonyMethod(preName),postfix: new HarmonyMethod(postName));
-                harmony.Patch(originRubyName, prefix: new HarmonyMethod(preRubyName));
-                harmony.Patch(originDesc, prefix: new HarmonyMethod(preDesc));                
-            }
-            catch
-            {
-                log.LogError("Broken");
-            }
+            // BindPostMethod<UnityEngine.AssetBundle, Translate>("LoadAssetAsync", "TestInject");
 
             BindEnableKey();
+
+            if(TMP_fallback_setting.Value)
+                BindTMP();
 
             // FOR DEBUG ONLY !!
             // BindDebugHelper();
@@ -80,7 +71,7 @@ namespace YGOTranslate
 
             try
             {
-                SwitchComponent.key = (BepInEx.IL2CPP.UnityEngine.KeyCode)Enum.Parse(typeof(BepInEx.IL2CPP.UnityEngine.KeyCode), enableKey.Value);
+                SwitchComponent.activeKey = (BepInEx.IL2CPP.UnityEngine.KeyCode)Enum.Parse(typeof(BepInEx.IL2CPP.UnityEngine.KeyCode), enableKey.Value);
 
                 var harmony = new Harmony("jackoo.helloworld.il2cpp");
 
@@ -95,6 +86,27 @@ namespace YGOTranslate
             }
         }
 
+        public void BindTMP()
+        {
+            try
+            {
+                ClassInjector.RegisterTypeInIl2Cpp<FontHelper>();
+
+                var go = new UnityEngine.GameObject("FontHelper");
+                go.AddComponent<FontHelper>();
+                go.AddComponent<TMPro.TextMeshProUGUI>();
+                Object.DontDestroyOnLoad(go);
+
+                FontHelper.tmpKey = (BepInEx.IL2CPP.UnityEngine.KeyCode)Enum.Parse(typeof(BepInEx.IL2CPP.UnityEngine.KeyCode), tmpKey.Value);
+            }
+            catch
+            {
+                log.LogError("Failed to register IL2CPP - FontHelper");
+            }
+
+            BindPostMethod<CardPictureCreator, FontHelper>("Update", "Update");
+        }
+
         public void BindDebugHelper()
         {
             try
@@ -103,6 +115,7 @@ namespace YGOTranslate
 
                 var go = new UnityEngine.GameObject("DebugHelper");
                 go.AddComponent<DebugHelper>();
+                FontHelper.instance= go;
                 Object.DontDestroyOnLoad(go);
             }
             catch
@@ -110,19 +123,59 @@ namespace YGOTranslate
                 log.LogError("Failed to register IL2CPP - DebugHelper");
             }
 
+            // 目前Debug隨便綁定一個monobehaviour物件
+            BindPostMethod<CardPictureCreator, DebugHelper>("Update", "Update");
+        }
+
+#region Method_Binding_Method
+        public void BindMethod<T1,T2>(string origin,string prefix,string postfix)
+        {
             try
             {
-                var harmony = new Harmony("jackoo.helloworld.il2cpp");
+                var harmony = new Harmony("jackoo.ygotranslate.il2cpp");
+                var originMethod = AccessTools.Method(typeof(T1), origin);
+                var prefixMethod = AccessTools.Method(typeof(T2), prefix);
+                var postfixMethod = AccessTools.Method(typeof(T2), postfix);
 
-                // 目前Debug隨便綁定一個monobehaviour物件
-                var bindUpdate = AccessTools.Method(typeof(CardPictureCreator), "Update");
-                var postUpdate = AccessTools.Method(typeof(DebugHelper), "Update");
-                harmony.Patch(bindUpdate, postfix: new HarmonyMethod(postUpdate));
+                harmony.Patch(originMethod, prefix: new HarmonyMethod(prefixMethod), postfix: new HarmonyMethod(postfixMethod));
             }
             catch
             {
-                log.LogError("DEBUG KEY BIND FAILED!");
+                log.LogError("Method " + origin + " cannot bind!");
             }
         }
+        public void BindPreMethod<T1, T2>(string origin, string prefix)
+        {
+            try
+            {
+                var harmony = new Harmony("jackoo.ygotranslate.il2cpp");
+                var originMethod = AccessTools.Method(typeof(T1), origin);
+                var prefixMethod = AccessTools.Method(typeof(T2), prefix);
+
+                harmony.Patch(originMethod, prefix: new HarmonyMethod(prefixMethod));
+            }
+            catch
+            {
+                log.LogError("Method Prefix " + origin + " cannot bind!");
+            }
+        }
+        public void BindPostMethod<T1, T2>(string origin,string postfix)
+        {
+            try
+            {
+                var harmony = new Harmony("jackoo.ygotranslate.il2cpp");
+                var originMethod = AccessTools.Method(typeof(T1), origin);
+                var postfixMethod = AccessTools.Method(typeof(T2), postfix);
+
+                harmony.Patch(originMethod, postfix: new HarmonyMethod(postfixMethod));
+            }
+            catch
+            {
+                log.LogError("Method Postfix " + origin + " cannot bind!");
+            }
+        }
+
+
+        #endregion
     }
 }

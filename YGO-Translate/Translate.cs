@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using BepInEx.IL2CPP;
 using YgomGame.Card;
+using Object = UnityEngine.Object;
 
 namespace YGOTranslate
 {
@@ -54,7 +55,7 @@ namespace YGOTranslate
         }
 
         [HarmonyPrefix]
-        public static bool GetRubyName_Pre(ref string __result, int cardId, bool replaceAlnum = true)
+        public static bool GetRubyName_Pre(YgomGame.Card.Content __instance,ref string __result, int cardId, bool replaceAlnum = true)
         {
             if (!isActive)
             {
@@ -63,6 +64,7 @@ namespace YGOTranslate
 
             if (Data.FindById(cardId) == null)
             {
+                BepInExLoader.log.LogMessage("Card " + __result + " not found! / id = " + cardId.ToString());
                 return true;
             }
             else
@@ -92,6 +94,12 @@ namespace YGOTranslate
                 __result = temp;
                 return false;
             }
+        }
+    
+        [HarmonyPostfix]
+        public static void TestInject()
+        {
+            BepInExLoader.log.LogMessage("TEst");
         }
     }
 }
