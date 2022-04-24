@@ -25,7 +25,8 @@ YGO MD 中文字典查找插件。
 - 修改遊戲內 `GetName()`、`GetDesc()` 、 `GetRubyName()` 三個方法，依照卡牌內部ID取得中文翻譯回傳
 
 ## 已知問題
-- `TMP Fallback` 目前的 `Font Asset` 是使用 [Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans+TC) 生成，沒有包含字元 `‧` 導致功能開啟還是會缺字
+- ~~`TMP Fallback` 目前的 `Font Asset` 是使用 [Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans+TC) 生成，沒有包含字元 `‧` 導致功能開啟還是會缺字~~
+- 改用 [Chiron sans](https://chiron-fonts.github.io/) 還是有部分缺字
 
 ## 雜項
 - 使用 [XUnity.AutoTranslator](https://github.com/bbepis/XUnity.AutoTranslator) - XUnity.Common 並修改部分 `TMP Fallback` 腳本
