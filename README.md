@@ -13,7 +13,9 @@ YGO MD 中文字典查找插件。
 - dataPath - 翻譯檔路徑
 - switchKey - 開關按鍵，使用 `Ctrl`+`[value]`，預設 `F9`
 - TMP_fallback - 是否使用 `TMP Fallback` 功能
-- tmpKey - TMP Fallback 資源載入按鍵，`Ctrl`+`[value]`，預設 `F12`
+- ~~tmpKey - TMP Fallback 資源載入按鍵，`Ctrl`+`[value]`，預設 `F12`~~ 版本1.5後會自動加載
+- copy_enable - 開啟卡名複製功能 (原文基本上可使用，翻譯過後的卡名需要展開滿版卡片說明才能複製)，預設為`false`
+- copyKey - 複製卡名按鍵，`Ctrl`+`Shift`+`[value]`，預設 `c`
 
 ## 注意事項
 - ~~遊戲語言需先調整成 ***英文*** 才能正常翻譯~~ v1.2 後不再依賴卡名查詢
