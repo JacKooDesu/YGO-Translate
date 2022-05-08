@@ -19,8 +19,6 @@ namespace YGOTranslate
         public static GameObject instance;
         public static UnityEngine.Object fallbackFont;
 
-        public static BepInEx.IL2CPP.UnityEngine.KeyCode tmpKey;
-
         public static bool hasTryLoad = false;
 
         public FontHelper(IntPtr ptr) : base(ptr)
@@ -34,18 +32,18 @@ namespace YGOTranslate
             if (hasTryLoad)
                 return;
 
-            if (Input.GetKeyInt(tmpKey) && Event.current.type == EventType.KeyDown && Event.current.control)
+            //if (Input.GetKeyInt(tmpKey) && Event.current.type == EventType.KeyDown && Event.current.control)
+            //{
+            hasTryLoad = true;
+            if (fallbackFont == null)
             {
-                hasTryLoad = true;
-                if (fallbackFont == null)
-                {
-                    fallbackFont =  LoadFont();
-                    LoadFallbackFont();
-                }                    
-
-                BepInExLoader.log.LogMessage("Changed tmpro font");
-                Event.current.Use();
+                fallbackFont = LoadFont();
+                LoadFallbackFont();
             }
+
+            BepInExLoader.log.LogMessage("Changed tmpro font");
+            Event.current.Use();
+            //}
         }
 
         static UnityEngine.Object LoadFont()

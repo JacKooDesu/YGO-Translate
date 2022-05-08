@@ -137,10 +137,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BepInExLoader.cs" />
+    <Compile Include="CardActionMenuModify.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DebugHelper.cs" />
     <Compile Include="FontHelper.cs" />
-    <Compile Include="SwitchComponent.cs" />
+    <Compile Include="InputHandleComponent.cs" />
     <Compile Include="Translate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

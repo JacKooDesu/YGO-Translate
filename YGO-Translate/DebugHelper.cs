@@ -22,7 +22,7 @@ namespace YGOTranslate
         [HarmonyPostfix]
         public static void Update()
         {
-            if (Input.GetKeyInt(BepInEx.IL2CPP.UnityEngine.KeyCode.F12) && Event.current.type == EventType.KeyDown && Event.current.control)
+            if (Input.GetKeyInt(BepInEx.IL2CPP.UnityEngine.KeyCode.F7) && Event.current.type == EventType.KeyDown && Event.current.control)
             {
                 BepInExLoader.log.LogMessage("Debug Key Pressed!");
                 Data.PatchGameId();

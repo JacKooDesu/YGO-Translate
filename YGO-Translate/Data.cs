@@ -46,26 +46,26 @@ namespace YGOTranslate
                 int i = 0;
                 while ((str = reader.ReadLine()) != null)
                 {
-                    if (i != 0)
-                    {
-                        var keys =str.Split(',');
-                        if (keys.Length == 5)
-                        {
-                            cards.Add(new CardSetting(Int32.Parse(keys[0]), Int32.Parse(keys[1]),  keys[2].ToLower(), keys[3], keys[4]));
-                        } 
-                        else
-                        {
-                            var engLength = keys.Length - 4;
-                            var c = new CardSetting(Int32.Parse(keys[0]), Int32.Parse(keys[1]), "", keys[3+engLength-1], keys[4 + engLength - 1]);
-                            var finalEng = "";
-                            for (int j = 0; j < engLength; j++)
-                                finalEng += keys[j + 2];
-                            
-                            c.eng = finalEng.ToLower();
 
-                            cards.Add(c);
-                        }
+                    CardSetting c;
+                    var keys = str.Split(',');
+                    if (keys.Length == 5)
+                    {
+                        c = new CardSetting(Int32.Parse(keys[0]), Int32.Parse(keys[1]), keys[2].ToLower(), keys[3], keys[4]);
                     }
+                    else
+                    {
+                        var engLength = keys.Length - 4;
+                        c = new CardSetting(Int32.Parse(keys[0]), Int32.Parse(keys[1]), "", keys[3 + engLength - 1], keys[4 + engLength - 1]);
+                        var finalEng = "";
+                        for (int j = 0; j < engLength; j++)
+                            finalEng += keys[j + 2];
+
+                        c.eng = finalEng.ToLower();
+                    }
+
+                    if (c.eng != string.Empty)
+                        cards.Add(c);
                     ++i;
 
                     await Task.Yield();

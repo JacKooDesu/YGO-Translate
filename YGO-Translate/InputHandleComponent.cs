@@ -12,11 +12,13 @@ using HarmonyLib;
 
 namespace YGOTranslate
 {
-    public class SwitchComponent : MonoBehaviour
+    public class InputHandleComponent : MonoBehaviour
     {
         public static BepInEx.IL2CPP.UnityEngine.KeyCode activeKey;
+        
+        public static BepInEx.IL2CPP.UnityEngine.KeyCode copyKey;
 
-        public SwitchComponent(IntPtr ptr) : base(ptr)
+        public InputHandleComponent(IntPtr ptr) : base(ptr)
         {
             BepInExLoader.log.LogMessage("Switch Component Constructor!");
         }
@@ -28,6 +30,15 @@ namespace YGOTranslate
             {
                 Translate.isActive = !Translate.isActive;
                 BepInExLoader.log.LogMessage("YGO-Translate is " + (Translate.isActive ? "on" : "off"));
+                Event.current.Use();
+            }
+
+            if (!BepInExLoader.copyEnable.Value)
+                return;
+            if (Input.GetKeyInt(copyKey) && Event.current.type == EventType.KeyDown && Event.current.control && Event.current.shift)
+            {
+                GUIUtility.systemCopyBuffer = Translate.lastSelectCard;
+                BepInExLoader.log.LogMessage("[ "+ Translate.lastSelectCard + " ] has copied!");
                 Event.current.Use();
             }
         }

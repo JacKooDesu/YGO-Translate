@@ -14,6 +14,8 @@ namespace YGOTranslate
     {
         public static bool isActive = true;
 
+        public static string lastSelectCard = "";
+
         public Translate(IntPtr ptr)
         {
 
@@ -27,7 +29,6 @@ namespace YGOTranslate
                 __state = false;
                 return true;
             }
-                
 
             if (Data.FindById(cardId) == null)
             {
@@ -38,6 +39,8 @@ namespace YGOTranslate
             {
                 __state = false;
                 __result = Data.FindById(cardId).cn;
+
+                lastSelectCard = __result;
                 return false;
             }            
         }
@@ -45,13 +48,26 @@ namespace YGOTranslate
         [HarmonyPostfix]
         public static void GetName_Post(ref string __result, bool __state, int cardId, bool replaceAlnum = true)
         {
+            if (__result == String.Empty)
+                return;
+
+            lastSelectCard = __result;
+
             if (!__state)
                 return;
+
             var setting = Data.FindByName(__result,cardId);
             if (setting != null)
+            {
                 __result = setting.cn;
+                BepInExLoader.log.LogMessage("Card " + __result + " is found by name! / id = " + cardId.ToString());
+            }
             else
-                BepInExLoader.log.LogMessage("Card " + __result + " not found! / id = " + cardId.ToString());
+            {
+                BepInExLoader.log.LogWarning("Card " + __result + " not found! / id = " + cardId.ToString());
+            }
+
+            lastSelectCard = __result;
         }
 
         [HarmonyPrefix]
@@ -64,7 +80,6 @@ namespace YGOTranslate
 
             if (Data.FindById(cardId) == null)
             {
-                BepInExLoader.log.LogMessage("Card " + __result + " not found! / id = " + cardId.ToString());
                 return true;
             }
             else

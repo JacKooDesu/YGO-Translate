@@ -7,7 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YGOTranslate", "YGO-Transla
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CDB Patch Helper", "CDB Patch Helper", "{5EDF7649-2153-45A4-8A40-D845487DFBEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDB Patch Helper", "CDB Patch Helper\CDB Patch Helper.csproj", "{19D0492B-AD1D-4FFD-A3CA-B01695B7F753}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDB Patch Helper", "CDB Patch Helper\CDB Patch Helper.csproj", "{19D0492B-AD1D-4FFD-A3CA-B01695B7F753}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Asset Uncompressor", "Asset Uncompressor", "{31FBCFCA-12C2-44E1-909F-E6B6EE333D7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asset Uncompressor", "Asset Uncompressor\Asset Uncompressor.csproj", "{3A94C9C4-ACF9-42F0-A7CC-B0D6706097D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +27,17 @@ Global
 		{19D0492B-AD1D-4FFD-A3CA-B01695B7F753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19D0492B-AD1D-4FFD-A3CA-B01695B7F753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19D0492B-AD1D-4FFD-A3CA-B01695B7F753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A94C9C4-ACF9-42F0-A7CC-B0D6706097D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A94C9C4-ACF9-42F0-A7CC-B0D6706097D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A94C9C4-ACF9-42F0-A7CC-B0D6706097D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A94C9C4-ACF9-42F0-A7CC-B0D6706097D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{19D0492B-AD1D-4FFD-A3CA-B01695B7F753} = {5EDF7649-2153-45A4-8A40-D845487DFBEF}
+		{3A94C9C4-ACF9-42F0-A7CC-B0D6706097D8} = {31FBCFCA-12C2-44E1-909F-E6B6EE333D7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19593323-57EB-4EF8-BE7E-FFDFBF9B1B81}

@@ -35,7 +35,7 @@ public class SqliteHelper
                 {
                     while (reader.Read())
                     {
-                        result.Add(new Card(Int32.Parse(reader["id"].ToString()), reader["name"].ToString(), reader["desc"].ToString()));
+                        result.Add(new Card(-1,Int32.Parse(reader["id"].ToString()), reader["name"].ToString(), reader["desc"].ToString()));
                     }
                 }
             }
