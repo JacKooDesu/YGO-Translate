@@ -31,5 +31,5 @@ YGO MD 中文字典查找插件。
 - 改用 [Chiron sans](https://chiron-fonts.github.io/) 還是有部分缺字
 
 ## 雜項
-- 使用 [XUnity.AutoTranslator](https://github.com/bbepis/XUnity.AutoTranslator) - XUnity.Common 並修改部分 `TMP Fallback` 腳本
+- 使用 [XUnity.Common](https://github.com/bbepis/XUnity.AutoTranslator/tree/master/src/XUnity.Common) 並修改部分 `TMP Fallback` 腳本
 - 此插件 ***沒有修改遊戲檔案、沒有修改連線相關函式*** ，但如果怕被鎖還是別用
