@@ -28,7 +28,8 @@ YGO MD 中文字典查找插件。
 
 ## 已知問題
 - ~~`TMP Fallback` 目前的 `Font Asset` 是使用 [Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans+TC) 生成，沒有包含字元 `‧` 導致功能開啟還是會缺字~~
-- 改用 [Chiron sans](https://chiron-fonts.github.io/) 還是有部分缺字
+- 改用 [Chiron sans](https://chiron-fonts.github.io/)，若還有缺字可以至 [Issue](https://github.com/JacKooDesu/YGO-Translate/issues) 內回報，會盡快更新TMP Asset
+- 卡面文字目前還是會有嚴重缺字
 
 ## 雜項
 - 使用 [XUnity.Common](https://github.com/bbepis/XUnity.AutoTranslator/tree/master/src/XUnity.Common) 並修改部分 `TMP Fallback` 腳本
