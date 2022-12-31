@@ -1,5 +1,8 @@
 ﻿class Program
 {
+    const int KEY_INDEX_GAME_ID = 0;
+    const int KEY_INDEX_ID = 1;
+
     const string path = "./files/";
     static List<Card> engList;
     static List<Card> targetList;
@@ -30,8 +33,8 @@
     {
         FileStream fs = new FileStream(csv, FileMode.Create, FileAccess.Write);
         StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        string data = $"遊戲id,實卡id,Eng,卡名,敘述";
-        sw.WriteLine(data);
+        string data = "";
+        //sw.WriteLine(data);
 
         int i = 0;
         foreach (var d in targetList)
@@ -59,24 +62,26 @@
             int i = 0;
             while ((str = reader.ReadLine()) != null)
             {
-                if (i != 0)
+                var keys = str.Split(',');
+                int gameId = Int32.Parse(keys[KEY_INDEX_GAME_ID]);
+                int id = Int32.Parse(keys[KEY_INDEX_ID]);
+
+                if (engList.Exists(c => c.Id == id))
                 {
-                    var keys = str.Split(',');
-                    int gameId = Int32.Parse(keys[0]);
-                    int id = Int32.Parse(keys[1]);
-
-                    if (engList.FindIndex(c => c.Id == id) != -1)
+                    string oldName = string.Empty;
+                    for(int j = 2; j < keys.Length-2; ++j)
                     {
-                        string oldName = string.Empty;
-                        for(int j = 2; j < keys.Length-2; ++j)
-                        {
-                            oldName += keys[j];
-                            oldName += j != keys.Length - 3 ? ',' : string.Empty;
-                        }
-
-                        engList.Find(c => c.Id == id).Name = oldName;
-                        targetList.Find(c => c.Id == id).GameId = Int32.Parse(keys[0]);
+                        oldName += keys[j];
+                        oldName += j != keys.Length - 3 ? ',' : string.Empty;
                     }
+
+                    if(gameId!=-1)
+                        engList.Find(c => c.Id == id).Name = String.IsNullOrEmpty(oldName) ? "Name_Missing" : oldName;
+                }
+                // if cn id exist, only update name/desc
+                if (targetList.Exists(c => c.Id == id))
+                {
+                    targetList.Find(c => c.Id == id).GameId = gameId;
                 }
                 ++i;
             }
