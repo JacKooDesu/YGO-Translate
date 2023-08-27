@@ -24,8 +24,7 @@ namespace YGOTranslate
         {
             if (Input.GetKeyInt(BepInEx.IL2CPP.UnityEngine.KeyCode.F7) && Event.current.type == EventType.KeyDown && Event.current.control)
             {
-                BepInExLoader.log.LogMessage("Debug Key Pressed!");
-                Data.PatchGameId();
+                BepInExLoader.log.LogMessage("Debug Key Pressed!");   
                 Event.current.Use();
             }
         }

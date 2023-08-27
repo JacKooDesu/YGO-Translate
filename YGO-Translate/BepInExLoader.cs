@@ -18,11 +18,12 @@ namespace YGOTranslate
         public const string
             ModName = "YGOTranslate",
             Guid = "com.jackoo.YGOTranslate",
-            Version = "1.4";
+            Version = "2.0";
 
         public static BepInEx.Logging.ManualLogSource log;
 
         static ConfigEntry<string> databasePath;
+        static ConfigEntry<string> idPairPath;
         static ConfigEntry<bool> TMP_fallback_setting;
 
         static ConfigEntry<string> enableKey;
@@ -35,7 +36,8 @@ namespace YGOTranslate
             log = Log;
 
             databasePath = Config.Bind("General", "dataPath", "YGOTranslate\\data.csv");
-            Data.Setup(databasePath.Value);
+            idPairPath = Config.Bind("General", "idPairPath", "YGOTranslate\\pwd-id-pair.csv");
+            Data.Setup(databasePath.Value, idPairPath.Value);
 
             TMP_fallback_setting = Config.Bind("General", "TMP_fallback", true, "This is an copy version of XUnity fallback script, still in test!");
 

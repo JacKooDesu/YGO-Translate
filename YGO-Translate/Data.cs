@@ -4,80 +4,97 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using System.Transactions;
+using Mono.Data.Sqlite;
 
 namespace YGOTranslate
 {
     public class CardSetting
     {
-        public CardSetting(int gameId,int id,string eng,string cn,string cnDesc)
+        public CardSetting(int gameId, string cn, string cnDesc)
         {
             this.gameId = gameId;
-            this.id = id;
-            this.eng = eng; 
             this.cn = cn;
             this.cnDesc = cnDesc;
         }
         public int gameId;
-        public int id;
-        public string eng;
         public string cn;
-        public string engDesc;
         public string cnDesc;
     }
 
     public static class Data
     {
         public static List<CardSetting> cards = new List<CardSetting>();
+        public static List<int> invalidIds = new List<int>();
 
         static string file;
-        public async static void Setup(string dir)
-        {          
-            if (!File.Exists(dir))
+        public async static void Setup(string cdb, string idPair)
+        {
+            if (!File.Exists(cdb))
             {
-                BepInExLoader.log.LogMessage("Dir"+ Path.GetFullPath(dir)+ " not found");
+                BepInExLoader.log.LogMessage("Dir" + Path.GetFullPath(cdb) + " not found");
                 return;
             }
 
-            file = dir;
+            file = cdb;
 
             string str = "";
-            using(var reader = new StreamReader(dir))
+            Dictionary<uint, List<int>> idPairDict = new Dictionary<uint, List<int>>();
+            using (var reader = new StreamReader(idPair))
             {
-                int i = 0;
                 while ((str = reader.ReadLine()) != null)
                 {
-
-                    CardSetting c;
                     var keys = str.Split(',');
-                    if (keys.Length == 5)
+
+                    if (keys.Length != 2 ||
+                        !Int32.TryParse(keys[0], out var id) ||
+                        !UInt32.TryParse(keys[1], out var pwd))
                     {
-                        c = new CardSetting(Int32.Parse(keys[0]), Int32.Parse(keys[1]), keys[2].ToLower(), keys[3], keys[4]);
+                        BepInExLoader.log.LogMessage("id-pwd-pair: `" + str + "` is invalid!!");
+                        continue;
                     }
+
+                    if (idPairDict.ContainsKey(pwd))
+                        idPairDict[pwd].Add(id);
                     else
-                    {
-                        var engLength = keys.Length - 4;
-                        c = new CardSetting(Int32.Parse(keys[0]), Int32.Parse(keys[1]), "", keys[3 + engLength - 1], keys[4 + engLength - 1]);
-                        var finalEng = "";
-                        for (int j = 0; j < engLength; j++)
-                            finalEng += keys[j + 2];
-
-                        c.eng = finalEng.ToLower();
-                    }
-
-                    if (c.eng != string.Empty)
-                        cards.Add(c);
-                    ++i;
+                        idPairDict.Add(pwd, new List<int> { id });
 
                     await Task.Yield();
                 }
 
                 reader.Close();
             }
+
+            using (var reader = new StreamReader(cdb))
+            {
+                while ((str = reader.ReadLine()) != null)
+                {
+                    var keys = str.Split(',');
+
+                    if (keys.Length != 3 ||
+                        !UInt32.TryParse(keys[0], out var pwd) ||
+                        !idPairDict.TryGetValue(pwd, out var ids))
+                    {
+                        // BepInExLoader.log.LogMessage("cdb: `" + str + "` is invalid!!");
+                        continue;
+                    }
+
+                    var name = keys[1];
+                    var desc = keys[2];
+
+                    cards.AddRange(ids.Select(
+                        id => new CardSetting(id, name, desc)));
+                    await Task.Yield();
+                }
+
+                reader.Close();
+            }
+
         }
 
         public static CardSetting FindById(int gameId)
         {
-            if (cards.FindIndex((c) => c.gameId == gameId) !=-1)
+            if (cards.FindIndex((c) => c.gameId == gameId) != -1)
             {
                 int index = cards.FindIndex((c) => c.gameId == gameId);
                 return cards.Find((c) => c.gameId == gameId);
@@ -86,34 +103,13 @@ namespace YGOTranslate
             return null;
         }
 
-        public static CardSetting FindByName(string nm,int gameId=-1)
+        public static void LogInvalid(string name, int id)
         {
-            nm = nm.Replace(",", string.Empty);
-            nm = nm.ToLower();
-            if (cards.FindIndex((c) => c.eng == nm) != -1)
+            if (!invalidIds.Contains(id))
             {
-                //BepInExLoader.log.LogMessage("Founded!");
-                var index = cards.FindIndex((c) => c.eng == nm);
-                cards[index].gameId = gameId;
-                return cards.Find((c) => c.eng == nm);
+                BepInExLoader.log.LogWarning("Card `" + name + "` not found! / id = " + id.ToString());
+                Data.invalidIds.Add(id);
             }
-            return null;
-        }
-    
-        public async static void PatchGameId()
-        {
-            string data = "";
-            FileStream fs = new FileStream(Path.GetDirectoryName(file) + "/modified.csv", FileMode.Create, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-            foreach (var card in cards)
-            {
-                data = card.gameId.ToString() + "," + card.id.ToString() + "," + card.eng + "," + card.cn + "," + card.cnDesc;
-                BepInExLoader.log.LogMessage(data);
-                sw.WriteLine(data);
-                await Task.Yield();
-            }
-            sw.Close();
-            fs.Close();
         }
     }
 }

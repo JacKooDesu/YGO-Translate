@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using BepInEx.IL2CPP;
 using YgomGame.Card;
+using System.Data.SQLite;
 using Object = UnityEngine.Object;
 
 namespace YGOTranslate
@@ -16,13 +17,10 @@ namespace YGOTranslate
 
         public static string lastSelectCard = "";
 
-        public Translate(IntPtr ptr)
-        {
-
-        }
+        public Translate(IntPtr ptr) { }
 
         [HarmonyPrefix]
-        public static bool GetName_Pre(ref string __result, out bool __state, int cardId,bool replaceAlnum=true)
+        public static bool GetName_Pre(ref string __result, out bool __state, int cardId, bool replaceAlnum = true)
         {
             if (!isActive)
             {
@@ -30,19 +28,8 @@ namespace YGOTranslate
                 return true;
             }
 
-            if (Data.FindById(cardId) == null)
-            {
-                __state = true;
-                return true;
-            }
-            else
-            {
-                __state = false;
-                __result = Data.FindById(cardId).cn;
-
-                lastSelectCard = __result;
-                return false;
-            }            
+            __state = FindCardName(ref __result, cardId);
+            return __state;
         }
 
         [HarmonyPostfix]
@@ -56,35 +43,31 @@ namespace YGOTranslate
             if (!__state)
                 return;
 
-            var setting = Data.FindByName(__result,cardId);
-            if (setting != null)
-            {
-                __result = setting.cn;
-                BepInExLoader.log.LogMessage("Card " + __result + " is found by name! / id = " + cardId.ToString());
-            }
-            else
-            {
-                BepInExLoader.log.LogWarning("Card " + __result + " not found! / id = " + cardId.ToString());
-            }
+            Data.LogInvalid(__result, cardId);
 
             lastSelectCard = __result;
         }
 
         [HarmonyPrefix]
-        public static bool GetRubyName_Pre(YgomGame.Card.Content __instance,ref string __result, int cardId, bool replaceAlnum = true)
+        public static bool GetRubyName_Pre(YgomGame.Card.Content __instance, ref string __result, int cardId, bool replaceAlnum = true)
         {
             if (!isActive)
             {
                 return true;
             }
 
+            return FindCardName(ref __result, cardId);
+        }
+
+        static bool FindCardName(ref string result, int cardId)
+        {
             if (Data.FindById(cardId) == null)
             {
                 return true;
             }
             else
             {
-                __result = Data.FindById(cardId).cn;
+                result = Data.FindById(cardId).cn;
                 return false;
             }
         }
@@ -104,17 +87,11 @@ namespace YGOTranslate
             else
             {
                 var temp = "";
-                temp+=Data.FindById(cardId).cnDesc;
-                temp=temp.Replace("\\n", "\n");
+                temp += Data.FindById(cardId).cnDesc;
+                temp = temp.Replace("\\n", "\n");
                 __result = temp;
                 return false;
             }
-        }
-    
-        [HarmonyPostfix]
-        public static void TestInject()
-        {
-            BepInExLoader.log.LogMessage("TEst");
         }
     }
 }

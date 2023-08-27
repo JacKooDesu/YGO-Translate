@@ -32,8 +32,6 @@ namespace YGOTranslate
             if (hasTryLoad)
                 return;
 
-            //if (Input.GetKeyInt(tmpKey) && Event.current.type == EventType.KeyDown && Event.current.control)
-            //{
             hasTryLoad = true;
             if (fallbackFont == null)
             {
@@ -43,7 +41,6 @@ namespace YGOTranslate
 
             BepInExLoader.log.LogMessage("Changed tmpro font");
             Event.current.Use();
-            //}
         }
 
         static UnityEngine.Object LoadFont()
@@ -117,7 +114,7 @@ namespace YGOTranslate
 
             //try
             //{
-                
+
             //    var asbundle = AssetBundle.LoadFromFile(System.IO.Path.GetFullPath(path));
             //    // BepInExLoader.log.LogMessage(asbundle.LoadAsset<TMP_FontAsset>("NotoSansCJKtc-Medium SDF"));
             //    var customTmp = new TMP_FontAsset();
@@ -151,12 +148,12 @@ namespace YGOTranslate
 #if MANAGED
                var fallbacks = (IList)UnityTypes.TMP_Settings_Properties.FallbackFontAssets.Get( null );
 #else
-                    var fallbacksObj = (Il2CppSystem.Object)UnityTypes.TMP_Settings_Properties.FallbackFontAssets.Get(null);
-                    var fallbacks = fallbacksObj.TryCast<Il2CppSystem.Collections.IList>();
+                var fallbacksObj = (Il2CppSystem.Object)UnityTypes.TMP_Settings_Properties.FallbackFontAssets.Get(null);
+                var fallbacks = fallbacksObj.TryCast<Il2CppSystem.Collections.IList>();
 #endif
-                    fallbacks.Add(fallbackFont);
+                fallbacks.Add(fallbackFont);
 
-                    BepInExLoader.log.LogMessage($"Loaded fallback font for TextMesh Pro: " + fallbackFont);
+                BepInExLoader.log.LogMessage($"Loaded fallback font for TextMesh Pro: " + fallbackFont);
             }
             catch (Exception e)
             {

@@ -79,6 +79,9 @@
       <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\Yu-Gi-Oh!  Master Duel\BepInEx\core\Mono.Cecil.Rocks.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>..\..\..\Unity Dll\Mono\Mono.Data.Sqlite.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite">
