@@ -1,6 +1,10 @@
 # YGO-Translate
 YGO MD 中文字典查找插件。
 
+## 2023.08 後更
+
+小弟我最近比較沒時間開遊戲、更新遊戲，有使用插件的玩家可以查看 `~\BepInEx\LogOutput.log` ，並善用 Issue 提交功能，讓我可以直接用 API 更新。
+
 ## 安裝方法
 0. 下載並安裝 [BepInEx Unity IL2CPP](https://builds.bepinex.dev/projects/bepinex_be)
 1. [下載](https://github.com/JacKooDesu/YGO-Translate/releases) 插件
@@ -11,6 +15,7 @@ YGO MD 中文字典查找插件。
 
 - 路徑 - `~\Yu-Gi-Oh! Master Duel\BepInEx\config\com.jackoo.YGOTranslate.cfg` 
 - dataPath - 翻譯檔路徑
+- idPairPath - Password-GameID 檔案路徑
 - switchKey - 開關按鍵，使用 `Ctrl`+`[value]`，預設 `F9`
 - TMP_fallback - 是否使用 `TMP Fallback` 功能
 - ~~tmpKey - TMP Fallback 資源載入按鍵，`Ctrl`+`[value]`，預設 `F12`~~ 版本1.5後會自動加載
