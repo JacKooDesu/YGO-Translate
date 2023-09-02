@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Threading.Tasks;
-using System.Transactions;
-using Mono.Data.Sqlite;
+using SQLite;
 
 namespace YGOTranslate
 {
@@ -109,6 +107,39 @@ namespace YGOTranslate
             {
                 BepInExLoader.log.LogWarning("Card `" + name + "` not found! / id = " + id.ToString());
                 Data.invalidIds.Add(id);
+            }
+        }
+
+        public static string sqlPath = "YGOTranslate\\card.cdb";
+        public static void TestSql()
+        {
+            try
+            {
+                var connPath = "Data Source=" + sqlPath + ";";
+                var db = new SQLiteConnection(connPath);
+                // var ids = db.Query<int>(@"select id from texts;");
+                // foreach (var x in ids)
+                //     BepInExLoader.log.LogWarning(x.ToString());
+                // var cmd = db.CreateCommand(@" select id from texts;");
+                // cmd.CommandText = ;
+
+                // using (var reader = cmd.ExecuteReader())
+                // {
+                //     while (reader.Read())
+                //     {
+                //         var name = reader["name"]?.ToString();
+                //         var id = Int32.Parse(reader["id"]?.ToString());
+                //         BepInExLoader.log.LogWarning(name + id.ToString());
+                //         // result.Add(new Card(
+                //         //     reader["desc"]?.ToString()!));
+                //     }
+                // }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                BepInExLoader.log.LogError(ex.Message);
+
             }
         }
     }

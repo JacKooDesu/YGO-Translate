@@ -7,16 +7,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
-using Input = BepInEx.IL2CPP.UnityEngine.Input;
+using BeUnityEngine = BepInEx.Unity.IL2CPP.UnityEngine;
+using Input = BepInEx.Unity.IL2CPP.UnityEngine.Input;
 using HarmonyLib;
 
 namespace YGOTranslate
 {
     public class InputHandleComponent : MonoBehaviour
     {
-        public static BepInEx.IL2CPP.UnityEngine.KeyCode activeKey;
+        public static BeUnityEngine.KeyCode activeKey;
         
-        public static BepInEx.IL2CPP.UnityEngine.KeyCode copyKey;
+        public static BeUnityEngine.KeyCode copyKey;
 
         public InputHandleComponent(IntPtr ptr) : base(ptr)
         {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using Input = BepInEx.IL2CPP.UnityEngine.Input;
+using Input = BepInEx.Unity.IL2CPP.UnityEngine.Input;
 using HarmonyLib;
 using TMPro;
 using XUnity.Common.Constants;

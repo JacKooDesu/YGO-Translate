@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
-using Input = BepInEx.IL2CPP.UnityEngine.Input;
+using Input = BepInEx.Unity.IL2CPP.UnityEngine.Input;
 using HarmonyLib;
 
 namespace YGOTranslate
@@ -22,7 +22,7 @@ namespace YGOTranslate
         [HarmonyPostfix]
         public static void Update()
         {
-            if (Input.GetKeyInt(BepInEx.IL2CPP.UnityEngine.KeyCode.F7) && Event.current.type == EventType.KeyDown && Event.current.control)
+            if (Input.GetKeyInt(BepInEx.Unity.IL2CPP.UnityEngine.KeyCode.F7) && Event.current.type == EventType.KeyDown && Event.current.control)
             {
                 BepInExLoader.log.LogMessage("Debug Key Pressed!");   
                 Event.current.Use();

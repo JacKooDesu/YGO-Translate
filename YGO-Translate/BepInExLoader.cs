@@ -9,16 +9,17 @@ using Object = UnityEngine.Object;
 using UnhollowerRuntimeLib;
 using YgomGame.Card;
 using BepInEx.Configuration;
+using BepInEx.Core;
 
 namespace YGOTranslate
 {
     [BepInPlugin(Guid, ModName, Version)]
-    public class BepInExLoader : BepInEx.IL2CPP.BasePlugin
+    public class BepInExLoader : BepInEx.Unity.IL2CPP.BasePlugin
     {
         public const string
             ModName = "YGOTranslate",
             Guid = "com.jackoo.YGOTranslate",
-            Version = "2.0";
+            Version = "2.1";
 
         public static BepInEx.Logging.ManualLogSource log;
 
@@ -83,8 +84,8 @@ namespace YGOTranslate
 
             try
             {
-                InputHandleComponent.activeKey = (BepInEx.IL2CPP.UnityEngine.KeyCode)Enum.Parse(typeof(BepInEx.IL2CPP.UnityEngine.KeyCode), enableKey.Value);
-                InputHandleComponent.copyKey = (BepInEx.IL2CPP.UnityEngine.KeyCode)Enum.Parse(typeof(BepInEx.IL2CPP.UnityEngine.KeyCode), copyKey.Value);
+                InputHandleComponent.activeKey = (BepInEx.Unity.IL2CPP.UnityEngine.KeyCode)Enum.Parse(typeof(BepInEx.Unity.IL2CPP.UnityEngine.KeyCode), enableKey.Value);
+                InputHandleComponent.copyKey = (BepInEx.Unity.IL2CPP.UnityEngine.KeyCode)Enum.Parse(typeof(BepInEx.Unity.IL2CPP.UnityEngine.KeyCode), copyKey.Value);
 
                 var harmony = new Harmony("jackoo.helloworld.il2cpp");
 
